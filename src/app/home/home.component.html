@@ -1,0 +1,86 @@
+<head>
+	<!-- META -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1"><!-- Optimize mobile viewport -->
+
+	<title>Food Ordering App</title>
+
+	<!-- SCROLLS -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"><!-- load bootstrap -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+	
+
+</head>
+<body ng-controller="mainController">
+  <div class="container">
+
+    <!-- HEADER AND TODO COUNT -->
+    <div class="jumbotron text-center">
+      <h1>Food Ordering</h1>
+      <h2>No. Of Orders <span class="label label-info">{{ orders.length }}</span></h2>
+    </div>
+
+
+    <div class="col-md-4" id="orderForm">
+      <form class="form-horizontal" role="form" name="form" #f="ngForm" (ngSubmit)="f.form.valid && createOrder()">
+        <h2>Order Form</h2>
+        <div class="form-group">
+          <label for="menu Item" class="col-sm-4 control-label">Menu Item</label>
+
+
+          <select name="foodName" id="foodName" [(ngModel)]="orderData.foodName">
+            <option value="">---Please select---</option> <!-- not selected / blank option -->
+            <option value="{{item.foodName}},{{item.price}}" *ngFor="let item of menuItems">
+              {{item.foodName}},${{item.price}}</option> <!-- interpolation -->
+
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="quantity" class="col-sm-4 control-label">Quantity</label>
+
+          <select name="quantity" id="quantity" [(ngModel)]="orderData.quantity">
+            <option value="">---Please select---</option> <!-- not selected / blank option -->
+            <option value="{{i}}" type="number" *ngFor="let item of [].constructor(10); let i = index">{{i}}</option>
+            <!-- interpolation -->
+
+          </select>
+        </div>
+
+        <!-- createOrder() WILL CREATE NEW ORDERS -->
+        <button class="btn btn-primary btn-lg">Add</button>
+      </form>
+    </div>
+    <div id="display-Dishes" class="col-md-6">
+
+      <table class="table table-striped">
+        <caption>
+          <h2> Current Orders</h2>
+        </caption>
+        <thead>
+          <tr>
+            <th>Menu Item</th>
+            <th>Price Per Item</th>
+            <th>Quantity </th>
+            <th>Total Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of orders">
+            <td>{{order.foodName}}</td>
+            <td>{{order.price}}</td>
+            <td>{{order.quantity}}</td>
+            <td>{{order.total}}</td>
+
+
+            <td><button (click)="deleteOrder(order._id)">remove</button></td>
+          </tr>
+        </tbody>
+      </table>
+      <div id="total">
+        <b>Sub Total {{totalAmount.subTotal}}<br>Tax(7.5%) {{totalAmount.tax}}<br>Est.Total
+          {{totalAmount.estimatedTotal}}</b>
+
+      </div>
+    </div>
+  </div>
+</body>
